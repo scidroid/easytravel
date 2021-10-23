@@ -1,38 +1,41 @@
-import { useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from "react-leaflet";
+import React from "react";
+import { Map, Marker, GoogleApiWrapper, InfoWindow } from "google-maps-react";
 
-const LocationMarker = () => {
-  const [position, setPosition] = useState(null)
-  const map = useMapEvents({
-    click() {
-      map.locate()
-    },
-    locationfound(e) {
-      setPosition(e.latlng)
-      map.flyTo(e.latlng, map.getZoom())
-    },
-  })
+function BlogPage({ google }) {
+  const [showSanctuaryOne, setShowSanctuaryOne] = React.useState(false);
+  const [activeMarkerOne, setActiveMarkerOne] = React.useState({ name: "" });
+  const [place, setPlace] = React.useState({});
 
-  return position === null ? null : (
-    <Marker position={position}>
-      <Popup>You are here</Popup>
-    </Marker>
-  )
+  const onMarkerClickOne = (props, marker, e) => {
+    setPlace(props);
+    setActiveMarkerOne(marker);
+    setShowSanctuaryOne(true);
+  };
+
+  return (
+    <div>
+      <Map
+        google={google}
+        zoom={8}
+        initialCenter={{ lat: 40, lng: -80 }}
+      >
+        <Marker
+          position={{ lat: 38.9296156, lng: -77.0519731 }}
+          title={"Washington DC Sanctuary"}
+          name={"Washington DC"}
+          onClick={onMarkerClickOne}
+        />
+        <InfoWindow visible={showSanctuaryOne} marker={activeMarkerOne}>
+          <div className="h-2">
+            <h2 className="font-bold">Washington DC Sanctuary</h2>
+            <p className="text-sm">An endangered Panda was spotted</p>
+          </div>
+        </InfoWindow>
+      </Map>
+    </div>
+  );
 }
 
-const Map = () => {
-  return (
-    <MapContainer
-    center={{ lat: 51.505, lng: -0.09 }}
-    zoom={13}
-    scrollWheelZoom={false}>
-    <TileLayer
-      attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-    />
-    <LocationMarker />
-  </MapContainer>
-  );
-};
-
-export default Map;
+export default GoogleApiWrapper({
+  apiKey: "AIzaSyDX5b2eROUXhaHcVDNiX4yAnipp3d7898Q",
+})(BlogPage);

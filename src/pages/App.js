@@ -1,10 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import Aside from "../partials/Aside";
-import StickyBox from "react-sticky-box";
 import Map from "../partials/Map";
 
 function Dash() {
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  const { isAuthenticated, isLoading } = useAuth0();
 
   if (isLoading) {
     return (
@@ -19,9 +17,6 @@ function Dash() {
   return (
     isAuthenticated && (
       <div className="flex">
-        <StickyBox>
-          <Aside avatar={user.picture} />
-        </StickyBox>
         <Map />
       </div>
     )
