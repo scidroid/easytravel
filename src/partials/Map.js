@@ -1,41 +1,45 @@
-import React from "react";
-import { Map, Marker, GoogleApiWrapper, InfoWindow } from "google-maps-react";
+import { useState, useEffect } from "react";
+import { Map, GoogleApiWrapper, Marker } from "google-maps-react";
 
-function BlogPage({ google }) {
-  const [showSanctuaryOne, setShowSanctuaryOne] = React.useState(false);
-  const [activeMarkerOne, setActiveMarkerOne] = React.useState({ name: "" });
-  const [place, setPlace] = React.useState({});
+export const MapComponent = ({ google }) => {
+  const [places, setPlaces] = useState(null);
+  useEffect(() => {
+    getData();
+    async function getData() {
+      const response = await fetch(
+        "/data.json"
+      );
+      const data = await response.json();
+      setPlaces(data.data[0]);
+    }
+  }, []);
 
-  const onMarkerClickOne = (props, marker, e) => {
-    setPlace(props);
-    setActiveMarkerOne(marker);
-    setShowSanctuaryOne(true);
+  const handleClick = (url) => {
+    window.open(url);
   };
 
   return (
-    <div>
-      <Map
-        google={google}
-        zoom={8}
-        initialCenter={{ lat: 40, lng: -80 }}
-      >
-        <Marker
-          position={{ lat: 38.9296156, lng: -77.0519731 }}
-          title={"Washington DC Sanctuary"}
-          name={"Washington DC"}
-          onClick={onMarkerClickOne}
-        />
-        <InfoWindow visible={showSanctuaryOne} marker={activeMarkerOne}>
-          <div className="h-2">
-            <h2 className="font-bold">Washington DC Sanctuary</h2>
-            <p className="text-sm">An endangered Panda was spotted</p>
-          </div>
-        </InfoWindow>
-      </Map>
-    </div>
+    <>
+      {places && (
+        <Map google={google}>
+          {places.map((place, key) => (
+            <Marker
+              key={key}
+              title={place.name}
+              name={place.description}
+              position={{
+                lat: place.coords[0],
+                lng: place.coords[1],
+              }}
+              onClick={() => handleClick(place.url)}
+            />
+          ))}
+        </Map>
+      )}
+    </>
   );
-}
+};
 
 export default GoogleApiWrapper({
   apiKey: "AIzaSyDX5b2eROUXhaHcVDNiX4yAnipp3d7898Q",
-})(BlogPage);
+})(MapComponent);

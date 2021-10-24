@@ -1,0 +1,22 @@
+{
+  "data": [
+    [
+      {
+        "id": "61748ab37129f29da7220d89",
+        "coords": [51.05, -0.09],
+        "url": "https://www.youtube.com/watch?v=saVFFwtZ1FU",
+        "name": "sebastian",
+        "description": "Puebla is a beautiful place!"
+      },
+      {
+        "id": "617490cb7129f29da7220d8a",
+        "coords": [51.05, -0.09],
+        "url": "https://www.youtube.com/watch?v=saVFFwtZ1FU",
+        "name": "Juan",
+        "description": "lol"
+      }
+    ]
+  ],
+  "code": 200,
+  "message": "Destinations retrieved succesfully"
+}
