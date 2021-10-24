@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Map, GoogleApiWrapper, Marker } from "google-maps-react";
+import { AddPlace } from "./AddPlace";
 
 export const MapComponent = ({ google }) => {
   const [places, setPlaces] = useState(null);
@@ -20,8 +21,9 @@ export const MapComponent = ({ google }) => {
 
   return (
     <>
+    <AddPlace />
       {places && (
-        <Map google={google}>
+        <Map google={google} className="z-0 absolute top-0">
           {places.map((place, key) => (
             <Marker
               key={key}
