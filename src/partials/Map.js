@@ -7,7 +7,7 @@ export const MapComponent = ({ google }) => {
     getData();
     async function getData() {
       const response = await fetch(
-        "/data.json"
+        "https://0f16-2600-3c02-00-f03c-92ff-fe7e-fec.ngrok.io/destination/"
       );
       const data = await response.json();
       setPlaces(data.data[0]);
